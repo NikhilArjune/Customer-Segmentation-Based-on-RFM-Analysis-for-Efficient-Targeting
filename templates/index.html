@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Segmentation</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .banner {
+            background: linear-gradient(45deg, #4e54c8, #8f94fb);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .img-container {
+            margin-top: 30px;
+        }
+        .img-container img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .text-center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="banner">
+            <h1>Customer Segmentation</h1>
+            <p>Analyze your customer data and find meaningful segments</p>
+        </div>
+        <div class="form-container mx-auto" style="max-width: 600px;">
+            <form method="post" action="/predict" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="file">Upload CSV file:</label>
+                    <input type="file" class="form-control-file" id="file" name="file" accept=".csv">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </form>
+        </div>
+        <div class="img-container text-center" id="images">
+            <!-- Images will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('form').onsubmit = async (event) => {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+
+            const response = await fetch(form.action, {
+                method: form.method,
+                body: formData,
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    const imagesDiv = document.getElementById('images');
+                    imagesDiv.innerHTML = `
+                        <h3 class="text-center">Cluster Analysis</h3>
+                        <div class="row justify-content-center">
+                            <div class="col-md-4">
+                                <h4>Amount</h4>
+                                <img src="${data.amount_img}" alt="Cluster vs Amount">
+                            </div>
+                            <div class="col-md-4">
+                                <h4>Frequency</h4>
+                                <img src="${data.freq_img}" alt="Cluster vs Frequency">
+                            </div>
+                            <div class="col-md-4">
+                                <h4>Recency</h4>
+                                <img src="${data.recency_img}" alt="Cluster vs Recency">
+                            </div>
+                        </div>
+                    `;
+                }
+            } else {
+                alert('An error occurred. Please try again.');
+            }
+        };
+    </script>
+</body>
+</html>
