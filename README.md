@@ -14,3 +14,9 @@ R (Recency): Number of days since last purchase
 F (Frequency): Number of tracsactions
 
 M (Monetary): Total amount of transactions (revenue contributed)
+
+
+
+## output
+
+![image](https://github.com/NikhilArjune/Customer-Segmentation-Based-on-RFM-Analysis-for-Efficient-Targeting/assets/129947926/ca7a7513-644c-4432-a8e3-3a6837236559)
